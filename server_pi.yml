@@ -1,0 +1,8 @@
+---
+- name: Configure a headless pi setup
+  hosts: pis
+  user: pi
+  sudo: yes
+
+  roles: 
+     - server_pi

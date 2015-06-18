@@ -1,0 +1,65 @@
+---
+- name: Update SSHD Config first so if it breaks...
+  template: src=sshdconfig.jinja2 dest=/etc/ssh/sshd_config
+  notify: restart sshd
+
+- name: Update Aptitude
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: Remove Wolfram Engine
+  apt: name=wolfram-engine state=absent purge=yes
+
+- name: Install Screen
+  apt: name=screen state=present
+
+- name: Remove tons of X11 stuff no longer needed
+  apt: name={{ item }} state=absent purge=yes
+  with_items:
+    - scratch
+    - penguinspuzzle
+    - omxplayer
+    - xserver*
+    - x11*
+    - xarchiver
+    - xauth
+    - xkb-data
+    - console-setup
+    - xinit
+    - lightdm
+    - lxde*
+    - python-tk
+    - python3-tk
+    - gtk*
+    - libgtk*
+    - openbox
+    - libxt*
+    - lxpanel
+    - gnome*
+    - libqt*
+    - libxcb*
+    - libxfont*
+    - lxmenu*
+    - gvfs*
+    - xdg-*
+    - desktop*
+    - shared-mime-info
+    - gsfonts
+
+- name: Check if packages need to be autoremoved
+  command: apt-get --dry-run autoremove
+  register: check_autoremove
+  changed_when: False
+
+- name: Autoremove unused packages
+  command: apt-get -y autoremove
+  when: "'packages will be REMOVED' in check_autoremove.stdout"
+
+- name: Upgrade System
+  apt: update_cache=yes cache_valid_time=3600 upgrade=dist
+
+- name: Create Dan's Account n stuff
+  user: name=daniel shell=/bin/bash groups=adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,netdev,gpio,i2c,spi,input append=yes state=present password=http://docs.ansible.com/faq.html#how-do-i-generate-crypted-passwords-for-the-user-module
+
+- name: Add Dans SSH keys
+  authorized_key: user=daniel state=present key="ssh-rsa AWHOLEBUNCHOFstufinALONGstringthatMAKESupApublicKEYorOFcourseYOUcansourceAFILEWHICHisProbablyCLEANERBUTIwasalreadyDONE== daniel@primary-pc"
+  authorized_key: user=daniel state=present key="ssh-rsa http://docs.ansible.com/authorized_key_module.html dstinebaugh@users.noreply.github.com"

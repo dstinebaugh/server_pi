@@ -1,0 +1,11 @@
+sshd_port: 22
+sshd_permitroot: no
+sshd_pubkeyauth: yes
+sshd_gracetime: 20
+sshd_passauth: yes
+sshd_keybits: 768
+ntpd_server: 192.168.0.1
+ansible_ssh_user: pi
+ansible_ssh_pass: raspberry
+ansible_sudo: true
+ansible_connection: ssh
