@@ -4,7 +4,22 @@ sshd_pubkeyauth: "yes"
 sshd_gracetime: 20
 sshd_passauth: "yes"
 sshd_keybits: 768
+
 ntpd_server: 192.168.0.1
+
+deny_purge: 1w
+deny_purge_threshold: 2
+deny_attempts_valid: 5
+deny_attempts_invalid: 2
+deny_attempts_root: 1
+deny_reset_valid: 5d
+deny_reset_invalid: 10d
+deny_reset_root: 30d
+deny_reset_success: "yes"
+deny_sync_interval: 1h
+deny_sync_download_threshold: 2
+deny_sync_resiliency: 1d
+
 ansible_ssh_user: pi
 ansible_ssh_pass: raspberry
 ansible_sudo: true

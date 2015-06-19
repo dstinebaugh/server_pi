@@ -81,6 +81,7 @@
     - unrar-free
     - p7zip-full
     - molly-guard
+    - denyhosts
     - ufw
 
 - name: Update UFW firewall to allow all local RFC1918 subnets to access it
@@ -92,3 +93,7 @@
 
 - name: Enable UFW and have it start on boot
   ufw: state=enabled
+
+- name: Harden SSH with denyhosts
+  template: src=denyhosts.jinja2 dest=/etc/denyhosts.conf
+  notify: restart denyhosts
