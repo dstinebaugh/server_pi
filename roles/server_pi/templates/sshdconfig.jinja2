@@ -21,8 +21,9 @@ SyslogFacility AUTH
 LogLevel INFO
 
 # Authentication:
+# Is ansible working?
 LoginGraceTime {{ sshd_gracetime }}
-PermitRootLogin no
+PermitRootLogin {{ sshd_permitroot}}
 StrictModes yes
 
 RSAAuthentication yes
@@ -46,7 +47,7 @@ PermitEmptyPasswords no
 ChallengeResponseAuthentication no
 
 # Change to no to disable tunnelled clear text passwords
-PasswordAuthentication yes
+PasswordAuthentication {{ sshd_passauth }}
 
 X11Forwarding yes
 X11DisplayOffset 10
