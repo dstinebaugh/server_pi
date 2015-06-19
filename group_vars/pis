@@ -1,5 +1,5 @@
 sshd_port: 22
-sshd_permitroot: "no
+sshd_permitroot: "no"
 sshd_pubkeyauth: "yes"
 sshd_gracetime: 20
 sshd_passauth: "yes"
