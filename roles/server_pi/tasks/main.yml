@@ -48,8 +48,11 @@
   command: apt-get -y autoremove
   when: "'packages will be REMOVED' in check_autoremove.stdout"
 
-- name: Delete Python Games and test videos
-  command: rm -rf /opt/vc/src/hello_pi/hello_video/test.h264 /home/pi/python_games
+- name: Delete Python Games
+  file: path=/home/pi/python_games state=absent
+
+- name: Delete large test video
+  file: path=/opt/vc/src/hello_pi/hello_video/test.h264 state=absent
 
 - pause: prompt="SANITY CHECK!!! Everything from here on will add back to your server. Hit Ctrl+C now to abort and edit your roles/server_pi/tasks/main.yml file" seconds=15
 
@@ -84,7 +87,7 @@
     - denyhosts
     - ufw
 
-- name: Update UFW firewall to allow all local RFC1918 subnets to access it
+- name: Update UFW firewall to allow SSH access to local bogon ranges.
   ufw: rule=allow name=OpenSSH src={{ item }}
   with_items:
     - 10.0.0.0/8
